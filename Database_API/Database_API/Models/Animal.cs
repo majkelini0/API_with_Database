@@ -1,15 +1,19 @@
-﻿namespace Database_API.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Database_API.Models;
 
 public class Animal
 {
-    public int IdAnimal { get; set; }
+    // public int IdAnimal { get; set; }
+    // [Required]
+    // [MaxLength(199)]
+    
     public string Name { get; set; }
+    [MaxLength(199)]
     public string Description { get; set; }
+    [Required]
+    [MaxLength(199)]
     public string Category { get; set; }
+    [MaxLength(199)]
     public string Area { get; set; }
-    /*
-     * Description NVARCHAR(200) NULL,
-Category NVARCHAR(200),
-Area NVARCHAR(200),
-     */
 }

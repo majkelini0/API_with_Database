@@ -19,11 +19,17 @@ public class AnimalsController : ControllerBase
     }
     
     [HttpGet]
-    public IActionResult GetAnimals()
+    public IActionResult GetAnimals(string orderBy="name")
     {
-        var animals = _animalRepository.GetAnimals();
-         
+        var animals = _animalRepository.GetAnimals(orderBy);
         return Ok(animals);
+    }
+
+    [HttpPost]
+    public IActionResult CreateAnimal([FromBody] Animal animal)
+    {
+        _animalRepository.CreateAnimal(animal);
+        return StatusCode(StatusCodes.Status201Created);
     }
 
     // [HttpPost]

@@ -1,0 +1,25 @@
+create table Animal(
+IdAnimal INT PRIMARY KEY IDENTITY(1,1),
+Name NVARCHAR(200),
+Description NVARCHAR(200) NULL,
+Category NVARCHAR(200),
+Area NVARCHAR(200),
+)
+
+TRUNCATE TABLE Animal; -- Delete all table data
+
+insert into Animal
+values('Jas', 'wielki', 'cat', 'worldwide');
+insert into Animal
+values('Filodebilo', 'glupi', 'cat', 'worldwide');
+insert into Animal
+values('Edmund', 'gruby', 'dog', 'worldwide');
+insert into Animal
+values('Felicia', 'wredna', 'cat', 'worldwide');
+insert into Animal
+values('Gamon', 'chory', 'dog', 'worldwide');
+insert into Animal
+values('Dziewczynka', 'strachliwa', 'cat', 'worldwide');
+ 
+select * from animal
+order by name asc;

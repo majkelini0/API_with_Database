@@ -5,6 +5,7 @@ namespace Database_API.Repositories;
 
 public interface IAnimalRepository
 {
-    IEnumerable<Animal> GetAnimals();
+    IEnumerable<Animal> GetAnimals(string orderBy);
+    int CreateAnimal(Animal animal);
     void AddAnimal(AddAnimal animal);
 }
