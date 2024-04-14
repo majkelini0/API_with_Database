@@ -32,19 +32,17 @@ public class AnimalsController : ControllerBase
         return StatusCode(StatusCodes.Status201Created);
     }
 
-    // [HttpPost]
-    // public IActionResult AddAnimal([FromBody] AddAnimal animal)
-    // {
-    //     using SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("Default"));
-    //     connection.Open();
-    //
-    //     using SqlCommand command = new SqlCommand();
-    //     command.Connection = connection;
-    //     command.CommandText = "insert into Animal Values(@animalName, '', '', '')";
-    //     command.Parameters.AddWithValue("@animalName", animal.Name);
-    //
-    //     command.ExecuteNonQuery();
-    //
-    //     return Created("", null);
-    // }
+    [HttpPut("{animalid:int}")]
+    public IActionResult UpdateAnimal([FromBody] Animal animal, int animalid)
+    {
+        _animalRepository.UpdateAnimal(animal, animalid);
+        return StatusCode((StatusCodes.Status200OK));
+    }
+
+    [HttpDelete]
+    public IActionResult DeleteAnimal(int animalid)
+    {
+        _animalRepository.DeleteAnimal(animalid);
+        return StatusCode(StatusCodes.Status200OK);
+    }
 }

@@ -13,7 +13,7 @@ public class AnimalRepository : IAnimalRepository
         _configuration = configuration;
     }
     
-    public IEnumerable<Animal> GetAnimals(string orderBy)
+    public IEnumerable<AnimalWithId> GetAnimals(string orderBy)
     {
         if (!IsValidSortColumn(orderBy))
             throw new ArgumentException("Invalid sortBy parameter");
@@ -29,9 +29,9 @@ public class AnimalRepository : IAnimalRepository
 
         // wykonanie polecenia
         var reader = command.ExecuteReader();
-        var animals = new List<Animal>();
+        var animals = new List<AnimalWithId>();
 
-        //int idAnimalOrdinal = reader.GetOrdinal("IdAnimal");
+        int idAnimalOrdinal = reader.GetOrdinal("IdAnimal");
         int nameOrdinal = reader.GetOrdinal("Name");
         int descriptionOrdinal = reader.GetOrdinal("Description");
         int categoryOrdinal = reader.GetOrdinal("Category");
@@ -39,9 +39,9 @@ public class AnimalRepository : IAnimalRepository
         
         while (reader.Read())
         {
-            animals.Add(new Animal()
+            animals.Add(new AnimalWithId()
             {
-                //IdAnimal = reader.GetInt32(idAnimalOrdinal),
+                IdAnimal = reader.GetInt32(idAnimalOrdinal),
                 Name = reader.GetString(nameOrdinal),
                 Description = reader.GetString(descriptionOrdinal),
                 Category = reader.GetString(categoryOrdinal),
@@ -65,13 +65,42 @@ public class AnimalRepository : IAnimalRepository
 
         var affectedCount = command.ExecuteNonQuery();
         return affectedCount;
+        //return StatusCodes.Status201Created;
     }
 
-    public void AddAnimal(AddAnimal animal)
+    public int UpdateAnimal(Animal animal, int animalid)
     {
-        throw new NotImplementedException();
+        using SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("Default"));
+        connection.Open();
+        using SqlCommand command = new SqlCommand();
+        command.Connection = connection;
+
+        command.CommandText = "UPDATE Animal SET Name=@name, Description=@description, Category=@category, Area=@area WHERE IdAnimal=@animalid";
+        command.Parameters.AddWithValue("@name", animal.Name);
+        command.Parameters.AddWithValue("@description", animal.Description);
+        command.Parameters.AddWithValue("@category", animal.Category);
+        command.Parameters.AddWithValue("@area", animal.Area);
+        command.Parameters.AddWithValue("@animalid", animalid);
+        
+        var affectedCount = command.ExecuteNonQuery();
+        return affectedCount;
     }
-    
+
+    public int DeleteAnimal(int animalid)
+    {
+        using SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("Default"));
+        connection.Open();
+        using SqlCommand command = new SqlCommand();
+        command.Connection = connection;
+
+        command.CommandText = "DELETE FROM Animal WHERE IdAnimal = @animalid";
+        command.Parameters.AddWithValue("@animalid", animalid);
+        
+        var affectedCount = command.ExecuteNonQuery();
+        return affectedCount;
+    }
+
+
     private bool IsValidSortColumn(string column)
     {
         // Lista dozwolonych kolumn
